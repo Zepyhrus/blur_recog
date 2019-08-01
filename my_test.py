@@ -1,17 +1,28 @@
+#%% 
+import os
 from glob import glob
 import cv2
 import numpy as np
 import numpy.random as npr
+from os.path import join, split
+from shutil import copyfile
+import matplotlib.pyplot as plt
 
 
 
-images = glob("blur_cam_test/1/*.jpg")
-
-# sub_images = 
-
-for i in range(100):
-  img = cv2.imread(images[i])
-  print(img.shape)
+#%%
+plt.rcParamsDefault["figure.autolayout"] = True
 
 
+images = npr.choice(glob("train/2/*"), 16)
 
+plt.figure(figsize=(16, 16))
+for i, image in enumerate(images):
+  img = cv2.imread(image)
+  plt.subplot(4, 4, i+1)
+  plt.imshow(img[:, :, ::-1])
+
+
+
+
+#%%

@@ -1,0 +1,42 @@
+{
+  "explorer.confirmDelete": false,
+  "window.zoomLevel": 0,
+  "explorer.confirmDragAndDrop": false,
+  "editor.minimap.enabled": false,
+  "editor.tabSize": 2,
+  "editor.formatOnPaste": true,
+  "git.enableSmartCommit": true,
+  "breadcrumbs.enabled": true,
+  "python.linting.enabled": false,
+  "files.exclude": {
+    "**/*.jpg": true,
+    "**/*.JPG": true,
+    "**/*.JPEG": true,
+    "**/*.png": true,
+    "**/*.PNG": true,
+    "**/*.tiff": true,
+    "**/*.ckpt": true,
+    "**/*.meta": true,
+    "**/*.index": true,
+    "**/*.pyc": true,
+    "**/*.xml": true,
+    "*/*.bmp": true
+  },
+  "files.watcherExclude": {
+    "**/blur_cam_test/**": true,
+    "**/blur_cam_test0/**": true,
+    "**/blur_cam_test2/**": true,
+    "**/zhenai_aligned_0_blurred/**": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/image/**": true,
+    "**/data/**": true,
+    "**/error/**": true,
+    "**/anno/**": true,
+    "**/graph/**": true,
+    "**/train/**": true
+  },
+  "python.pythonPath": "/home/sherk/anaconda3/envs/torch-gpu/bin/python",
+  "git.ignoreLimitWarning": true,
+  "python.formatting.provider":"autopep8"
+}

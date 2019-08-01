@@ -17,7 +17,7 @@ from torch.utils.data.sampler import SubsetRandomSampler
 TRAIN_BATCH_SIZE = 128
 IMAGE_PARENT = '/home/sherk/Workspace/blur_recog/test'
 IMAGE_W_LABEL_TXT = '/home/sherk/Workspace/blur_recog/10_level_label.txt'
-MODEL_PREFIX = f'blur_reg_resnet18_{TRAIN_BATCH_SIZE}'
+MODEL_PREFIX = f'blur_reg_10_resnet18_{TRAIN_BATCH_SIZE}'
 MODE_FEATURE_EXTRACT = False
 USE_PRETRAINED = True
 TRAIN_SET_RATIO = 0.8
@@ -108,7 +108,7 @@ criterion = nn.MSELoss()
 model.to(device)
 
 # Prepare training process
-epochs = 25
+epochs = 100
 steps = 0
 running_loss = 0
 print_every = 10
@@ -167,7 +167,7 @@ for epoch in range(epochs):
       running_loss = 0
       model.train()
   
-  if epoch+1 == epochs:
+  if epoch % 25 == 24:
     model_file_name = f'{MODEL_PREFIX}_{epoch}.pt'
     print(f'Saving model to :{model_file_name}')
     torch.save(model, model_file_name)

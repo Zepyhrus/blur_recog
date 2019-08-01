@@ -22,7 +22,7 @@ blurred = cv2.medianBlur(image, kernel_size)  # 中值滤波
 
 
 
-images = glob(join("blur_cam_test", "0", "*"))
+images = glob(join("origin_images", "*"))
 
 
 

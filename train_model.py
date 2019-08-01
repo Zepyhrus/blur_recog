@@ -15,8 +15,8 @@ from torch.utils.data.sampler import SubsetRandomSampler
 
 # ===== Fine tune all weights: large batch size dynamic lr
 TRAIN_BATCH_SIZE = 128
-IMAGE_PARENT = '/home/ubuntu/Workspace/blur_recog/zhenai_aligned_0_blurred'
-IMAGE_W_LABEL_TXT = '/home/ubuntu/Workspace/blur_recog/zhenai_aligned_0_blurred_processed.txt'
+IMAGE_PARENT = '/home/sherk/Workspace/blur_recog/test'
+IMAGE_W_LABEL_TXT = '/home/sherk/Workspace/blur_recog/10_level_label.txt'
 MODEL_PREFIX = f'blur_reg_resnet18_{TRAIN_BATCH_SIZE}'
 MODE_FEATURE_EXTRACT = False
 USE_PRETRAINED = True
@@ -166,8 +166,9 @@ for epoch in range(epochs):
 
       running_loss = 0
       model.train()
-      
-  model_file_name = f'{MODEL_PREFIX}_{epoch}.pt'
-  print(f'Saving model to :{model_file_name}')
-  torch.save(model, model_file_name)
-      
+  
+  if epoch+1 == epochs:
+    model_file_name = f'{MODEL_PREFIX}_{epoch}.pt'
+    print(f'Saving model to :{model_file_name}')
+    torch.save(model, model_file_name)
+

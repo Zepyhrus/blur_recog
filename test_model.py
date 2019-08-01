@@ -75,14 +75,8 @@ for label in map_pred_index_to_label:
 		img = image_loader(image)
 
 		pred = model.forward(img).data.item()
-		# l1_distances = torch.abs(torch.Tensor([0, 1, 2]) - torch.Tensor([pred])).cpu()
-		# y_hat = map_pred_index_to_label[torch.argmin(l1_distances)]
-		if pred < 0.6:
-			y_hat = "0"
-		elif pred >= 0.6 and pred < 1.5:
-			y_hat = "1"
-		else:
-			y_hat = "2"
+		l1_distances = torch.abs(torch.Tensor([0, 1, 2]) - torch.Tensor([pred])).cpu()
+		y_hat = map_pred_index_to_label[torch.argmin(l1_distances)]
 
 
 		if label != y_hat:

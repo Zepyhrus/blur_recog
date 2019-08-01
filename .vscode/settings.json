@@ -20,7 +20,7 @@
     "**/*.index": true,
     "**/*.pyc": true,
     "**/*.xml": true,
-    "*/*.bmp": true
+    // "**/*.bmp": true
   },
   "files.watcherExclude": {
     "**/blur_cam_test/**": true,
@@ -30,11 +30,13 @@
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
     "**/image/**": true,
+    "**/origin_images/**": true,
     "**/data/**": true,
     "**/error/**": true,
     "**/anno/**": true,
     "**/graph/**": true,
-    "**/train/**": true
+    "**/train/**": true,
+    "**/test/**": true,
   },
   "python.pythonPath": "/home/sherk/anaconda3/envs/torch-gpu/bin/python",
   "git.ignoreLimitWarning": true,

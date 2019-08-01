@@ -17,7 +17,7 @@ from torch.utils.data.sampler import SubsetRandomSampler
 TRAIN_BATCH_SIZE = 128
 IMAGE_PARENT = '/home/ubuntu/Workspace/blur_recog/zhenai_aligned_0_blurred'
 IMAGE_W_LABEL_TXT = '/home/ubuntu/Workspace/blur_recog/zhenai_aligned_0_blurred_processed.txt'
-MODEL_PREFIX = f'blur_reg_resnet18_{TRAIN_BATCH_SIZE}'
+MODEL_PREFIX = f'blur_cls_resnet18_{TRAIN_BATCH_SIZE}'
 MODE_FEATURE_EXTRACT = False
 USE_PRETRAINED = True
 TRAIN_SET_RATIO = 0.8
@@ -33,6 +33,9 @@ class BlurImageDataset(Dataset):
         for line in fh:
             line = line.rstrip()
             file_name, label = line.split()
+            # modified for binary classification
+            if int(label) >= 1:
+                label = '1'
             imgs.append((file_base_dir + '/' + file_name, int(label)))
         self.imgs = imgs
         self.transform = transform
@@ -75,7 +78,7 @@ def load_split_train_test(datadir, valid_size = .2):
 
 # Prepare data
 train_transforms = transforms.Compose([transforms.ToTensor()])
-# train_transforms_target = transforms.Compose([transforms.ToTensor()])
+train_transforms_target = transforms.Compose([transforms.ToTensor()])
 full_dataset = BlurImageDataset(IMAGE_PARENT, IMAGE_W_LABEL_TXT, transform=train_transforms)
 
 train_size = int(TRAIN_SET_RATIO * len(full_dataset))
@@ -100,15 +103,17 @@ if MODE_FEATURE_EXTRACT:
 model.fc = nn.Sequential(nn.Linear(512, 128),
                          nn.ReLU(),
                          nn.Dropout(0.4),
-                         nn.Linear(128, 1)
+                         nn.Linear(128, 1),
+                         nn.Sigmoid()   # Sgimoid activation added
                          )
 
-criterion = nn.MSELoss()
+# the loss function is modified from MSELoss to BCELoss()
+criterion = nn.BCELoss()
 # optimizer = optim.Adam(model.fc.parameters(), lr=0.003)
 model.to(device)
 
 # Prepare training process
-epochs = 25
+epochs = 25  # modifed from 100 to 25
 steps = 0
 running_loss = 0
 print_every = 10
@@ -145,29 +150,17 @@ for epoch in range(epochs):
                     logps = model.forward(inputs)
                     batch_loss = criterion(logps, labels)
 
-                    # calculate distance between yn to x, the closest wins
-                    y1 = torch.Tensor(1).fill_(0).to(device)
-                    y1_x = logps - y1
-                    y2 = torch.Tensor(1).fill_(1).to(device)
-                    y2_x = logps - y2
-                    y3 = torch.Tensor(1).fill_(2).to(device)
-                    y3_x = logps - y3
-
-                    converted_top_class = torch.stack((y1_x, y2_x, y3_x), 1).squeeze()
-
-                    euclidean_converted_top_class = (converted_top_class)**2
-                    top_p, top_class = euclidean_converted_top_class.topk(1, dim=1, largest=False)
-                    top_class = top_class.to(torch.float32)
+                    test_loss += batch_loss.item()
+            print(f"Test loss (per batch): {test_loss / test_size * batch_size:.3f}")
 
             train_losses.append(running_loss / len(trainloader))
             print(f"Epoch {epoch + 1}/{epochs}.. "
-                  f"Train loss: {running_loss / print_every:.3f}.. "
+                  f"Train loss (per batch): {running_loss / print_every:.3f}.. "
                   )
-
+            
             running_loss = 0
             model.train()
-            
+
     model_file_name = f'{MODEL_PREFIX}_{epoch}.pt'
     print(f'Saving model to :{model_file_name}')
     torch.save(model, model_file_name)
-            

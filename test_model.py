@@ -3,9 +3,9 @@ from torchvision import transforms
 import torchvision
 from torch.utils.data import DataLoader
 from dataloader import BlurImageDataset
-IMAGE_PARENT = '/home/ubuntu/Projects/blur_evaluation/datasets/blur_cam_test'
+IMAGE_PARENT = '/home/ubuntu/Workspace/blur_recog/blur_cam_test'
 IMAGE_W_LABEL_TXT = '../data_generator/class_id_to_files_70001_test.txt'
-MODEL_NAME = 'weights/net_params_finetune_mse_dynamic_128_10'
+MODEL_NAME = 'blur_reg_resnet18_128_24'
 
 load_test_from_file = False
 

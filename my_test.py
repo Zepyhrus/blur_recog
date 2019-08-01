@@ -1,19 +1,17 @@
-
-IMAGE_W_LABEL_TXT = '/home/ubuntu/Workspace/blur_recog/zhenai_aligned_0_blurred_processed.txt'
-
-txt_path = IMAGE_W_LABEL_TXT
-
-
-
-with open(txt_path, 'r') as file:
-  fh = file.readlines()
-  imgs = []
-  for line in fh:
-    print(line)
-    line = line.rstrip()
-    file_name, label = line.split()
-    imgs.append((file_base_dir + '/' + file_name, int(label)))
+from glob import glob
+import cv2
+import numpy as np
+import numpy.random as npr
 
 
-for i in range(5):
-  print(fh[i])
+
+images = glob("blur_cam_test/1/*.jpg")
+
+# sub_images = 
+
+for i in range(100):
+  img = cv2.imread(images[i])
+  print(img.shape)
+
+
+

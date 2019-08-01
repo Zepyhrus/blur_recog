@@ -30,7 +30,10 @@ model.to(device)
 tested_cnt = 0
 total_data_size = len(test_dataset)
 
-for _, data in enumerate(test_loader, 0):
+
+result = {"0": 0, "1": 0, "2": 0}
+
+for i, data in enumerate(test_loader, 0):
 	tested_cnt += 1
 	test_x, test_y = data
 	test_x = test_x.to(device)
@@ -42,10 +45,11 @@ for _, data in enumerate(test_loader, 0):
 
 	y_hat_decoded = map_pred_index_to_label[y_hat]
 	test_y_decoded = map_pred_index_to_label[test_y]
+
 	if y_hat == test_y:
 		correct += 1
 	else:
 		print(f'Wrong prediction({y_hat_decoded}=>{test_y_decoded}) for file::{1}')
-	print(f'Current accuracy({tested_cnt}/{total_data_size}): {correct / tested_cnt} = {correct} / {tested_cnt}')
+	# print(f'Current accuracy({tested_cnt}/{total_data_size}): {correct / tested_cnt} = {correct} / {tested_cnt}')
 
 print("Accuracy={}".format(correct / total_data_size))

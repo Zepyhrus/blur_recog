@@ -108,7 +108,7 @@ criterion = nn.MSELoss()
 model.to(device)
 
 # Prepare training process
-epochs = 25
+epochs = 100
 steps = 0
 running_loss = 0
 print_every = 10
@@ -167,7 +167,7 @@ for epoch in range(epochs):
       running_loss = 0
       model.train()
   
-  if epoch+1 == epochs:
+  if epoch % 25 == 24:
     model_file_name = f'{MODEL_PREFIX}_{epoch}.pt'
     print(f'Saving model to :{model_file_name}')
     torch.save(model, model_file_name)

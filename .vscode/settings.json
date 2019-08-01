@@ -20,20 +20,25 @@
     "**/*.index": true,
     "**/*.pyc": true,
     "**/*.xml": true,
-    "*/*.bmp": true
+    // "**/*.bmp": true
   },
   "files.watcherExclude": {
     "**/blur_cam_test/**": true,
+    "**/blur_cam_test0/**": true,
     "**/blur_cam_test2/**": true,
     "**/zhenai_aligned_0_blurred/**": true,
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
     "**/image/**": true,
+    "**/origin_images/**": true,
     "**/data/**": true,
     "**/error/**": true,
     "**/anno/**": true,
-    "**/graph/**": true
+    "**/graph/**": true,
+    "**/train/**": true,
+    "**/test/**": true,
   },
-  "python.pythonPath": "/home/ubuntu/anaconda3/envs/torch-gpu/bin/python",
-  "git.ignoreLimitWarning": true
+  "python.pythonPath": "/home/sherk/anaconda3/envs/torch-gpu/bin/python",
+  "git.ignoreLimitWarning": true,
+  "python.formatting.provider":"autopep8"
 }

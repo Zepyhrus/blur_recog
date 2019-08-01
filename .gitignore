@@ -1,10 +1,16 @@
 # ignore dataset
 zhenai_aligned_0_blurred/
 blur_cam_test/
+blur_cam_test0/
 blur_cam_test2/
 zhenai_aligned_0_blurred.zip
+origin_images/
 image/
+train/
+test/
 
 
 # ignore saved files
 *.pt
+10_level_label.txt
+zhenai_aligned_0_blurred_processed.txt

@@ -3,7 +3,7 @@ from torchvision import transforms
 import torchvision
 from torch.utils.data import DataLoader
 from dataloader import BlurImageDataset
-IMAGE_PARENT = '/home/ubuntu/Workspace/blur_recog/blur_cam_test2'
+IMAGE_PARENT = '/home/ubuntu/Workspace/blur_recog/blur_cam_test'
 IMAGE_W_LABEL_TXT = '../data_generator/class_id_to_files_70001_test.txt'
 MODEL_NAME = 'blur_cls_resnet18_128_24'
 

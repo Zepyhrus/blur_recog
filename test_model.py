@@ -24,7 +24,7 @@ from dataloader import BlurImageDataset
 #%%
 IMAGE_PARENT = 'blur_cam_test'
 IMAGE_W_LABEL_TXT = '../data_generator/class_id_to_files_70001_test.txt'
-MODEL_NAME = 'blur_reg_resnet18_128_24'
+MODEL_NAME = 'blur_reg_10_resnet18_128_24'
 
 
 load_test_from_file = False
@@ -75,14 +75,12 @@ for label in map_pred_index_to_label:
 		img = image_loader(image)
 
 		pred = model.forward(img).data.item()
-		l1_distances = torch.abs(torch.Tensor([0, 1, 2]) - torch.Tensor([pred])).cpu()
-		y_hat = map_pred_index_to_label[torch.argmin(l1_distances)]
 
-
-		if label != y_hat:
-			copyfile(image, join(IMAGE_PARENT, label + y_hat, split(image)[-1]))
-			if label == "0" and y_hat == "1":
-				print(pred)
+		if label == "0" and pred >= 2:
+			copyfile(image, image.replace("/0/", "/01/"))
+		
+		if pred <= 2 and label == "1":
+			copyfile(image, image.replace("/1/", "/10/"))
 
 		result[label].append(pred)
 		# if i > 10:
@@ -90,10 +88,20 @@ for label in map_pred_index_to_label:
 		
 #%%
 plt.figure(figsize = (12, 6))
-plt.hist(result["0"], 20, alpha=0.7)
-plt.hist(result["1"], 20, alpha=0.7)
-plt.hist(result["2"], 20, alpha=0.7)
+plt.hist(result["0"], np.arange(100)/10, log=True, alpha=0.7)
+plt.hist(result["1"], np.arange(100)/10, log=True, alpha=0.7)
+plt.hist(result["2"], np.arange(100)/10, log=True, alpha=0.7)
 plt.legend(["0", "1", "2"])
+
+#%%
+(len([x for x in result["0"] if x < 2]) +\
+	len([x for x in result["1"] if x >= 2 and x < 6]) +\
+	len([x for x in result["2"] if x >= 6])) /\
+	(len(result["0"]) + len(result["1"]) + len(result["2"]))
+
+#%%
+
+
 
 
 

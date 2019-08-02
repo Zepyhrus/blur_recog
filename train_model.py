@@ -20,7 +20,7 @@ IMAGE_W_LABEL_TXT = '/home/ubuntu/Workspace/blur_recog/10_level_label.txt'
 MODEL_PREFIX = f'blur_reg_10_resnet18_{TRAIN_BATCH_SIZE}'
 MODE_FEATURE_EXTRACT = False
 USE_PRETRAINED = True
-TRAIN_SET_RATIO = 0.8
+TRAIN_SET_RATIO = 0.95
 
 # TODO: to external class
 class BlurImageDataset(Dataset):

@@ -24,8 +24,6 @@ blurred = cv2.medianBlur(image, kernel_size)  # 中值滤波
 
 images = glob(join("origin_images", "*"))
 
-
-
 label_file = open("10_level_label.txt", "w")
 
 

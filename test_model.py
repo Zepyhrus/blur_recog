@@ -24,7 +24,7 @@ from dataloader import BlurImageDataset
 #%%
 IMAGE_PARENT = 'blur_cam_test'
 IMAGE_W_LABEL_TXT = '../data_generator/class_id_to_files_70001_test.txt'
-MODEL_NAME = 'blur_reg_10_resnet18_128_24'
+MODEL_NAME = 'blur_reg_10_resnet18_1024_19'
 
 
 load_test_from_file = False
@@ -92,60 +92,13 @@ plt.hist(result["0"], np.arange(100)/10, log=True, alpha=0.7)
 plt.hist(result["1"], np.arange(100)/10, log=True, alpha=0.7)
 plt.hist(result["2"], np.arange(100)/10, log=True, alpha=0.7)
 plt.legend(["0", "1", "2"])
+plt.savefig('error.jpg')
+plt.close()
 
 #%%
-(len([x for x in result["0"] if x < 2]) +\
+accuracy = (len([x for x in result["0"] if x < 2]) +\
 	len([x for x in result["1"] if x >= 2 and x < 6]) +\
 	len([x for x in result["2"] if x >= 6])) /\
 	(len(result["0"]) + len(result["1"]) + len(result["2"]))
 
-#%%
-
-
-
-
-
-
-#%%
-tested_cnt = 0
-total_data_size = len(test_dataset)
-test_loader = DataLoader(test_dataset, batch_size=1, shuffle=True)
-correct = 0
-result = {"0": [], "1": [], "2": []}
-
-for i, data in enumerate(test_loader):
-	tested_cnt += 1
-	test_x, test_y = data
-	test_x = test_x.to(device)
-	test_y = test_y.to(device)
-	pred = model.forward(test_x)
-	probablity = pred.data.item()
-	l1_distances = torch.abs(torch.Tensor(
-	    [0, 1, 2]) - torch.Tensor([probablity])).cpu().to(device)
-	
-	# print(probablity)
-	# print(l1_distances)
-	y_hat = torch.argmin(l1_distances)
-
-	if test_y == 0:
-		result["0"].append(probablity)
-	elif test_y == 1:
-		result["1"].append(probablity)
-	else:
-		result["2"].append(probablity)
-
-	y_hat_decoded = map_pred_index_to_label[y_hat]
-	test_y_decoded = map_pred_index_to_label[test_y]
-
-	if y_hat == test_y:
-		correct += 1
-	else:
-		print(f'Wrong prediction({y_hat_decoded}=>{test_y_decoded}) for file::{1}')
-	
-	# if i > 20:
-	# 	break
-	# print(f'Current accuracy({tested_cnt}/{total_data_size}): {correct / tested_cnt} = {correct} / {tested_cnt}')
-
-# print("Accuracy={}".format(correct / total_data_size))
-
-#%%
+print("accuracy: ", accuracy)

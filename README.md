@@ -37,8 +37,16 @@ predict:
       0     886     117
       1     108     688
 
-3. ResNet18, binary classification problem
-`blur_cam_test` dataset:
+3. ResNet18, 0~9 levels, regression problem, the model performs the second best over `blur_cam_test` dataset:
+Total accuracy=0.0.5323464912280702
+using threshold: 0~2: clear | 2~6: mediam blur | 6~10: blur
+Confussion matrix:
+label:        0       1
+predict:
+      0     112      40
+      1     788     765
+
+3. ResNet18, binary classification problem, `blur_cam_test` dataset:
 Total accuracy=0.4413, Accuracy=0.4413, Recall = 1.0000, at threshold: 0.0
 Total accuracy=0.7845, Accuracy=0.6903, Recall = 0.9306, at threshold: 0.0
 Total accuracy=0.8026, Accuracy=0.7258, Recall = 0.8911, at threshold: 0.0

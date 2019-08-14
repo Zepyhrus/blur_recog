@@ -6,6 +6,7 @@ blur_cam_test/
 blur_cam_test0/
 blur_cam_test2/
 origin_images/
+origin_images_aug/
 image/
 train/
 test/

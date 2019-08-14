@@ -1,4 +1,5 @@
 # ignore dataset
+archive/
 zhenai_aligned_0_blurred/
 validate/
 blur_cam_test/
@@ -21,3 +22,4 @@ validate.zip
 *.pt
 10_level_label.txt
 zhenai_aligned_0_blurred_processed.txt
+

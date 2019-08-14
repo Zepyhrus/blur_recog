@@ -117,7 +117,7 @@ train_losses, test_losses = [], []
 
 print("Training start!")
 for epoch in range(epochs):
-  times = epoch
+  times = epoch // 3
   unit = 0.003
   optimizer = optim.Adam(model.fc.parameters(), lr=unit* (0.7 ** times))
 
@@ -135,35 +135,13 @@ for epoch in range(epochs):
     running_loss += loss.item()
 
     if steps % print_every == 0:
-      # print the loss on test date every 10 steps
-      test_loss = 0
-      model.eval()
-      with torch.no_grad():
-        for inputs, labels in testloader:
-          inputs, labels = inputs.to(device), labels.to(device)
-          labels = labels.to(dtype=torch.float32)
-          labels = labels.unsqueeze(1)
-          logps = model.forward(inputs)
-          batch_loss = criterion(logps, labels)
-
-          # calculate distance between yn to x, the closest wins
-          y1 = torch.Tensor(1).fill_(0).to(device)
-          y1_x = logps - y1
-          y2 = torch.Tensor(1).fill_(1).to(device)
-          y2_x = logps - y2
-          y3 = torch.Tensor(1).fill_(2).to(device)
-          y3_x = logps - y3
-
-          converted_top_class = torch.stack((y1_x, y2_x, y3_x), 1).squeeze()
-
-          euclidean_converted_top_class = (converted_top_class)**2
-          top_p, top_class = euclidean_converted_top_class.topk(1, dim=1, largest=False)
-          top_class = top_class.to(torch.float32)
+      # print train loss every print_every steps
 
       train_losses.append(running_loss / len(trainloader))
-      print(f"Epoch {epoch + 1}/{epochs}.. "
-          f"Train loss: {running_loss / print_every:.3f}.. "
-          )
+      print(
+        f"Epoch {epoch + 1}/{epochs}.. "
+        f"Train loss: {running_loss / print_every:.3f}.. "
+        )
 
       running_loss = 0
       model.train()

@@ -24,7 +24,7 @@ from dataloader import BlurImageDataset
 #%%
 IMAGE_PARENT = 'blur_cam_test'
 IMAGE_W_LABEL_TXT = '../data_generator/class_id_to_files_70001_test.txt'
-MODEL_NAME = 'blur_reg_10_resnet18_1024_19'
+MODEL_NAME = 'blur_reg_resnet18_128_24'
 
 
 load_test_from_file = False
@@ -96,9 +96,9 @@ plt.savefig('error.jpg')
 plt.close()
 
 #%%
-accuracy = (len([x for x in result["0"] if x < 2]) +\
-	len([x for x in result["1"] if x >= 2 and x < 6]) +\
-	len([x for x in result["2"] if x >= 6])) /\
+accuracy = (len([x for x in result["0"] if x < 0.5]) +\
+	len([x for x in result["1"] if x >= 0.5 and x < 1.5]) +\
+	len([x for x in result["2"] if x >= 1.5])) /\
 	(len(result["0"]) + len(result["1"]) + len(result["2"]))
 
 print("accuracy: ", accuracy)

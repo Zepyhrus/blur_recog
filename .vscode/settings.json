@@ -38,7 +38,7 @@
     "**/train/**": true,
     "**/test/**": true,
   },
-  "python.pythonPath": "/home/sherk/anaconda3/envs/torch-gpu/bin/python",
+  "python.pythonPath": "/home/ubuntu/anaconda3/envs/torch-gpu/bin/python",
   "git.ignoreLimitWarning": true,
   "python.formatting.provider":"autopep8"
 }

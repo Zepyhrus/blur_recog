@@ -1,13 +1,20 @@
 # ignore dataset
 zhenai_aligned_0_blurred/
+validate/
 blur_cam_test/
 blur_cam_test0/
 blur_cam_test2/
-zhenai_aligned_0_blurred.zip
 origin_images/
 image/
 train/
 test/
+__pycache__/
+
+# ignore compress files
+zhenai_aligned_0_blurred.zip
+origin_images.zip
+validate.zip
+
 
 
 # ignore saved files

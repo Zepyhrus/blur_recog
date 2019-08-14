@@ -97,18 +97,19 @@ if MODE_FEATURE_EXTRACT:
   for param in model.parameters():
     param.requires_grad = False
 
-model.fc = nn.Sequential(nn.Linear(512, 128),
-             nn.ReLU(),
-             nn.Dropout(0.4),
-             nn.Linear(128, 1)
-             )
+model.fc = nn.Sequential(
+  nn.Linear(512, 128),
+  nn.ReLU(),
+  nn.Dropout(0.4),
+  nn.Linear(128, 1)
+  )
 
 criterion = nn.MSELoss()
 # optimizer = optim.Adam(model.fc.parameters(), lr=0.003)
 model.to(device)
 
 # Prepare training process
-epochs = 100
+epochs = 25
 steps = 0
 running_loss = 0
 print_every = 10

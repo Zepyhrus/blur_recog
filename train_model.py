@@ -15,12 +15,12 @@ from torch.utils.data.sampler import SubsetRandomSampler
 
 # ===== Fine tune all weights: large batch size dynamic lr
 TRAIN_BATCH_SIZE = 128
-IMAGE_PARENT = '/home/sherk/Workspace/blur_recog/test'
-IMAGE_W_LABEL_TXT = '/home/sherk/Workspace/blur_recog/10_level_label.txt'
+IMAGE_PARENT = '/home/ubuntu/Workspace/blur_recog/test'
+IMAGE_W_LABEL_TXT = '/home/ubuntu/Workspace/blur_recog/10_level_label.txt'
 MODEL_PREFIX = f'blur_reg_10_resnet18_{TRAIN_BATCH_SIZE}'
 MODE_FEATURE_EXTRACT = False
 USE_PRETRAINED = True
-TRAIN_SET_RATIO = 0.8
+TRAIN_SET_RATIO = 0.99
 
 # TODO: to external class
 class BlurImageDataset(Dataset):
@@ -74,7 +74,10 @@ def load_split_train_test(datadir, valid_size = .2):
   return trainloader, testloader
 
 # Prepare data
-train_transforms = transforms.Compose([transforms.ToTensor()])
+train_transforms = transforms.Compose([
+  transforms.ColorJitter(0.25, 0.5, 0.5, 0.25),
+  transforms.ToTensor()])
+
 # train_transforms_target = transforms.Compose([transforms.ToTensor()])
 full_dataset = BlurImageDataset(IMAGE_PARENT, IMAGE_W_LABEL_TXT, transform=train_transforms)
 
@@ -146,8 +149,11 @@ for epoch in range(epochs):
       running_loss = 0
       model.train()
   
-  if epoch % 25 == 24:
+  if epoch % epochs == epochs - 1:
     model_file_name = f'{MODEL_PREFIX}_{epoch}.pt'
     print(f'Saving model to :{model_file_name}')
-    torch.save(model, model_file_name)
+
+    example = torch.rand(1, 3, 112, 96).to(torch.device("cuda"))
+    traced_script_module = torch.jit.trace(model, example)
+    torch.jit.save(traced_script_module, model_file_name)
 

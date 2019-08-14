@@ -10,19 +10,9 @@ import cv2
 
 from motion_blur import random_blur
 
-test_file = "blur_cam_test/0/1501855183567___c_77_y_-2__p_-21__r_-9_aligned.png"
-image = cv2.imread(test_file)
 
-kernel_size = 15
-blurred = cv2.GaussianBlur(image, (kernel_size, kernel_size), 100)  # 高斯滤波
-b2 = cv2.GaussianBlur(image, (kernel_size, kernel_size), 0)
-
-blurred = cv2.blur(image, (kernel_size, kernel_size))  # 领域均值滤波
-blurred = cv2.medianBlur(image, kernel_size)  # 中值滤波
-
-
-
-images = glob(join("origin_images", "*"))
+# take inputs from augumentation images
+images = glob(join("origin_images_aug", "*"))
 
 
 

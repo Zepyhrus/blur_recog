@@ -16,6 +16,7 @@ __pycache__/
 zhenai_aligned_0_blurred.zip
 origin_images.zip
 validate.zip
+image.zip
 
 
 
@@ -23,4 +24,4 @@ validate.zip
 *.pt
 10_level_label.txt
 zhenai_aligned_0_blurred_processed.txt
-
+pictures_2019_0518_0806_faceid.txt

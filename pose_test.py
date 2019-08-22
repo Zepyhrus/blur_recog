@@ -20,7 +20,8 @@ from torchvision import transforms
 model = torch.jit.load('face_pose.pt')
 gpu = 0
 #%%
-img = cv2.imread('../FaceRecog/image/33/right.jpg')[28:192, 53:181]
+img = cv2.imread(
+    '../FaceRecog/archive/image_1915_pair/33/right.jpg')[28:192, 53:181]
 
 plt.subplot(1, 2, 1)
 plt.imshow(img[:, :, ::-1])
@@ -31,16 +32,18 @@ plt.imshow(img[:, :, ::-1])
 
 plt.subplot(1, 2, 2)
 plt.imshow(img[:, :, ::-1])
-
+plt.show()
 #%%
 
 transformations = transforms.Compose(
-  [transforms.Scale(128),
+  [transforms.Resize(128),
   transforms.CenterCrop(128),
   transforms.ToTensor()])
 
 img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+plt.figure()
 plt.imshow(img, 'gray')
+plt.show()
 
 img = Image.fromarray(img)
 img = transformations(img)

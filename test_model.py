@@ -22,7 +22,7 @@ from dataloader import BlurImageDataset
 #%%
 IMAGE_PARENT = 'validate'
 IMAGE_W_LABEL_TXT = '../data_generator/class_id_to_files_70001_test.txt'
-MODEL_NAME = 'blur_reg_10_resnet18_1024_19.pt'
+MODEL_NAME = 'blur_reg_10_resnet18_1024_99.pt'
 
 SAVE_IMAGE = False
 THRESHOLD = 2.2  # 2.2 for 3 channels, 3.5 for 1 channel
@@ -41,8 +41,16 @@ test_dataset = torchvision.datasets.ImageFolder(root=IMAGE_PARENT, transform=tra
 map_pred_index_to_label = ['0', '1']  #%% load model
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-model_load = torch.load(f'./{MODEL_NAME}')
-model = model_load.eval()
+model = torch.load(f'./{MODEL_NAME}').eval()
+
+#%%
+dummy_tensor = torch.rand(1, 3, 112, 96).to(device)
+script_model = torch.jit.trace(model, dummy_tensor)
+torch.jit.save(script_model, 'blur_10_res18_99.pt')
+
+
+
+
 model.to(device)
 
 #%%

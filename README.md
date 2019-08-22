@@ -32,11 +32,23 @@ predict:
       0     886     117
       1     108     688
 
-3. ResNet18, 0~9 levels, regression problem, using brightness augumentation, threshold 2.2`:
+3. ResNet18, 0~9 levels, regression problem, using brightness augumentation, threshold 2.2, 19 epochs:
 label:          0       1
 pred:   0       910     179
         1       87      648
 accuracy:       0.8542
+
+4. ResNet18, 0~9 levels, regression problem, threshold 2.2, 79 epochs:
+label:          0       1
+pred:   0       899     165
+        1       98      662
+accuracy:       0.8558
+
+5. ResNet18, 0~9 levels, regression problem, threshold 2.2, 99 epochs:
+label:          0       1
+pred:   0       908     175
+        1       89      652
+accuracy:       0.8553
 
 4. ResNet18, 0~9 levels, using grayscale images, thershold 3.5:
 label:	0	1

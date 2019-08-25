@@ -51,9 +51,9 @@ pred:   0       908     175
 accuracy:       0.8553
 
 4. ResNet18, 0~9 levels, using grayscale images, thershold 3.5:
-label:	0	1
-pred:	0	883	140
-	1	114	687
+label:	0	    1
+pred:	0	883	  140
+	    1	114	  687
 accuracy:	0.8607
 
 ## Validate

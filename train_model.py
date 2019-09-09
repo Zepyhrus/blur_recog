@@ -15,12 +15,12 @@ from torch.utils.data.sampler import SubsetRandomSampler
 
 # ===== Fine tune all weights: large batch size dynamic lr
 TRAIN_BATCH_SIZE = 1024
-IMAGE_PARENT = '/home/ubuntu/Workspace/blur_recog/test'
-IMAGE_W_LABEL_TXT = '/home/ubuntu/Workspace/blur_recog/10_level_label.txt'
-MODEL_PREFIX = f'blur_reg_10_resnet18_{TRAIN_BATCH_SIZE}'
+IMAGE_PARENT = '/home/ubuntu/Workspace/blur_recog/test_gray'
+IMAGE_W_LABEL_TXT = '/home/ubuntu/Workspace/blur_recog/10_level_gray_label.txt'
+MODEL_PREFIX = f'blur_reg_10_gray_resnet18_{TRAIN_BATCH_SIZE}'
 MODE_FEATURE_EXTRACT = False
-USE_PRETRAINED = True
-TRAIN_SET_RATIO = 0.95
+USE_PRETRAINED = False  # gray scale training is built from scratch
+TRAIN_SET_RATIO = 0.99
 
 # TODO: to external class
 class BlurImageDataset(Dataset):
@@ -40,7 +40,8 @@ class BlurImageDataset(Dataset):
 
   def __getitem__(self, index):
     fn, label = self.imgs[index]
-    img = Image.open(fn).convert('RGB')
+    # img = Image.open(fn).convert('RGB')
+    img = Image.open(fn).convert('L')
     if self.transform is not None:
       img = self.transform(img)
     if self.target_transform is not None:
@@ -74,7 +75,11 @@ def load_split_train_test(datadir, valid_size = .2):
   return trainloader, testloader
 
 # Prepare data
-train_transforms = transforms.Compose([transforms.ToTensor()])
+# Prepare data
+train_transforms = transforms.Compose([
+  transforms.ColorJitter(0.25, 0.5, 0.5, 0.25),
+  transforms.ToTensor()])
+
 # train_transforms_target = transforms.Compose([transforms.ToTensor()])
 full_dataset = BlurImageDataset(IMAGE_PARENT, IMAGE_W_LABEL_TXT, transform=train_transforms)
 
@@ -91,6 +96,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Prepare Model
 model = models.resnet18(pretrained=USE_PRETRAINED)
+model.conv1 = nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
 print("Model loaded!")
 
 if MODE_FEATURE_EXTRACT:
@@ -134,31 +140,6 @@ for epoch in range(epochs):
     running_loss += loss.item()
 
     if steps % print_every == 0:
-      # print the loss on test date every 10 steps
-      test_loss = 0
-      model.eval()
-      with torch.no_grad():
-        for inputs, labels in testloader:
-          inputs, labels = inputs.to(device), labels.to(device)
-          labels = labels.to(dtype=torch.float32)
-          labels = labels.unsqueeze(1)
-          logps = model.forward(inputs)
-          batch_loss = criterion(logps, labels)
-
-          # calculate distance between yn to x, the closest wins
-          y1 = torch.Tensor(1).fill_(0).to(device)
-          y1_x = logps - y1
-          y2 = torch.Tensor(1).fill_(1).to(device)
-          y2_x = logps - y2
-          y3 = torch.Tensor(1).fill_(2).to(device)
-          y3_x = logps - y3
-
-          converted_top_class = torch.stack((y1_x, y2_x, y3_x), 1).squeeze()
-
-          euclidean_converted_top_class = (converted_top_class)**2
-          top_p, top_class = euclidean_converted_top_class.topk(1, dim=1, largest=False)
-          top_class = top_class.to(torch.float32)
-
       train_losses.append(running_loss / len(trainloader))
       print(f"Epoch {epoch + 1}/{epochs}.. "
           f"Train loss: {running_loss / print_every:.3f}.. "
